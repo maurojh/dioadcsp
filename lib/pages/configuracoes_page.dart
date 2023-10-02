@@ -46,18 +46,26 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               ),
               SwitchListTile(
                 title: const Text('Receber notificações:'),
-                value: receberPushNotification, onChanged: (bool valor) {
-                setState(() {
-                  receberPushNotification = valor;
-                });
-              },),
+                value: receberPushNotification,
+                onChanged: (bool valor) {
+                  setState(() {
+                    receberPushNotification = valor;
+                  });
+                },
+              ),
               SwitchListTile(
                 title: const Text('Tema escuro:'),
-                value: temaEscuro, onChanged: (bool valor) {
-                setState(() {
-                  temaEscuro = valor;
-                });
-              },),
+                value: temaEscuro,
+                onChanged: (bool valor) {
+                  setState(() {
+                    temaEscuro = valor;
+                  });
+                },
+              ),
+              TextButton(
+                onPressed: () {},
+                child: const Text('Salvar'),
+              ),
             ],
           ),
         ),
