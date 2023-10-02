@@ -1,3 +1,4 @@
+import 'package:dioadcsp/pages/configuracoes_page.dart';
 import 'package:dioadcsp/pages/numeros_aleatorios_page.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      //ajustar Drawer
+      home: const ConfiguracoesPage(),
+      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
