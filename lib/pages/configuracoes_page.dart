@@ -30,6 +30,14 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
   void carregarDados() async {
     armazenamento = await SharedPreferences.getInstance();
+    setState(() {
+      controlaNome.text = armazenamento.getString(KEY_NOME) ?? '';
+      controlaAltura.text =
+          (armazenamento.getDouble(KEY_ALTURA) ?? 0).toString();
+      temaEscuro = armazenamento.getBool(KEY_MODO) ?? false;
+      receberPushNotification =
+          armazenamento.getBool(KEY_NOTIFICACOES) ?? false;
+    });
   }
 
   @override
@@ -81,10 +89,28 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
               ),
               TextButton(
                 onPressed: () async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  try {
+                    await armazenamento.setDouble(
+                        KEY_ALTURA, double.parse(controlaAltura.text));
+                  } catch (e) {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        AlertDialog(
+                          title: Text('Configurações'),
+                          content: Text('Favor digitar uma altura válida!'),
+                          actions: [
+                            TextButton(onPressed: () {}, child: Text('Salvar'),),
+                          ],
+                        );
+                      },
+                    );
+                  }
                   await armazenamento.setBool(KEY_MODO, temaEscuro);
-                  await armazenamento.setBool(KEY_NOTIFICACOES, receberPushNotification);
+                  await armazenamento.setBool(
+                      KEY_NOTIFICACOES, receberPushNotification);
                   await armazenamento.setString(KEY_NOME, controlaNome.text);
-                  await armazenamento.setDouble(KEY_ALTURA, double.tryParse(controlaAltura.text) ?? 0);
                 },
                 child: const Text('Salvar'),
               ),
