@@ -13,6 +13,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   bool receberPushNotification = false;
   bool temaEscuro = false;
   TextEditingController controlaNome = TextEditingController();
+  TextEditingController controlaAltura = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +25,24 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         body: Container(
           child: ListView(
             children: [
-              TextField(
-                controller: controlaNome,
-                
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: controlaNome,
+                  decoration: const InputDecoration(
+                    label: Text('Nome:'),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: controlaAltura,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    label: Text('Altura:'),
+                  ),
+                ),
               ),
               SwitchListTile(
                 title: const Text('Receber notificações:'),
