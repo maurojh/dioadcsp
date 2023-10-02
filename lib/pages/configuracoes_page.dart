@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});
@@ -14,6 +15,22 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   bool temaEscuro = false;
   TextEditingController controlaNome = TextEditingController();
   TextEditingController controlaAltura = TextEditingController();
+  late SharedPreferences armazenamento;
+  final KEY_NOME = 'nome';
+  final KEY_ALTURA = 'altura';
+  final KEY_MODO = 'modo';
+  final KEY_NOTIFICACOES = 'noficacoes';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    carregarDados();
+  }
+
+  void carregarDados() async {
+    armazenamento = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +80,12 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                 },
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await armazenamento.setBool(KEY_MODO, temaEscuro);
+                  await armazenamento.setBool(KEY_NOTIFICACOES, receberPushNotification);
+                  await armazenamento.setString(KEY_NOME, controlaNome.text);
+                  await armazenamento.setDouble(KEY_ALTURA, double.tryParse(controlaAltura.text) ?? 0);
+                },
                 child: const Text('Salvar'),
               ),
             ],
