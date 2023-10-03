@@ -1,3 +1,4 @@
+import 'package:dioadcsp/pages/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   final KEY_ALTURA = 'altura';
   final KEY_MODO = 'modo';
   final KEY_NOTIFICACOES = 'noficacoes';
+  AppStorage armazena = AppStorage();
 
   @override
   void initState() {
@@ -30,8 +32,9 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
   void carregarDados() async {
     armazenamento = await SharedPreferences.getInstance();
-    setState(() {
-      controlaNome.text = armazenamento.getString(KEY_NOME) ?? '';
+    setState(() async {
+      controlaNome.text = await armazena.getConfiguracoesNome();
+      //controlaNome.text = armazenamento.getString(KEY_NOME) ?? '';
       controlaAltura.text =
           (armazenamento.getDouble(KEY_ALTURA) ?? 0).toString();
       temaEscuro = armazenamento.getBool(KEY_MODO) ?? false;
@@ -91,26 +94,30 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                 onPressed: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
                   try {
-                    await armazenamento.setDouble(
+                    armazenamento.setDouble(
                         KEY_ALTURA, double.parse(controlaAltura.text));
                   } catch (e) {
                     showDialog(
                       context: context,
                       builder: (_) {
-                        AlertDialog(
+                        return AlertDialog(
                           title: Text('Configurações'),
                           content: Text('Favor digitar uma altura válida!'),
                           actions: [
-                            TextButton(onPressed: () {}, child: Text('Salvar'),),
+                            TextButton(onPressed: () {
+                              Navigator.pop(context);
+                            }, child: Text('OK'),),
                           ],
                         );
                       },
                     );
+                    return;
                   }
                   await armazenamento.setBool(KEY_MODO, temaEscuro);
                   await armazenamento.setBool(
                       KEY_NOTIFICACOES, receberPushNotification);
-                  await armazenamento.setString(KEY_NOME, controlaNome.text);
+                  armazena.setConfiguracoesNome(controlaNome.text);
+                  //await armazenamento.setString(KEY_NOME, controlaNome.text);
                 },
                 child: const Text('Salvar'),
               ),
